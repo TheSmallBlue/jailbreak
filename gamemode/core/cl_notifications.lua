@@ -53,7 +53,7 @@ local function createNotice(key)
 	
 	local t = Notices[key].type;
 	pnl.icon = NoticeMaterial[ t ];
-	pnl.type = t == NOTIFY_GENERIC and "NOTICE" or t == NOTIFY_ERROR and "ERROR" or t == NOTIFY_UNDO and "OBJECTIVE" or t == NOTIFY_HINT and "HINT" or "NOTICE";
+	pnl.type = t == NOTIFY_GENERIC and "ALERTA" or t == NOTIFY_ERROR and "ERROR" or t == NOTIFY_UNDO and "OBJETIVO" or t == NOTIFY_HINT and "PISTA" or "ALERTA";
 	
 	activeNotice = pnl;
 end
