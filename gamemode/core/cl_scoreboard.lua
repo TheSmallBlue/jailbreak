@@ -362,7 +362,7 @@ vgui.Register("JBScoreboard",{
 		self.Host:SetTextColor( color_text );
 		self.Host:Dock(TOP);
 		self.Host:SetContentAlignment( 5 )
-		self.Host:SetText("A gamemode by Excl, hosted by "..JB.Config.website);
+		self.Host:SetText("Un modo de juego hecho por Excl, actualmente hosteando la partida Adler de GMA!");
 		self.Host:SizeToContents();
 
 		self.ScoresGuards = self:Add( "DScrollPanel" )
