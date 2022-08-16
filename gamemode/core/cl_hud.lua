@@ -34,17 +34,17 @@
 
 /* HINTS FOR THE SPECTATOR HUD (up here for easy access) */
 local Hints = {
-	"To initiate a last request, the last remaining prisoner can press F4 and choose from a number of different requests.",
-	"The last guard alive may kill all prisoners, unless at the point he becomes last guard there are under three prisoners alive.",
-	"The warden is the only guard who is allowed to give complicated commands, normal guards may only give simple commands (e.g. 'Move', 'Drop your weapon')",
-	"At the start of each round, the guards can claim the warden rank from the F4 menu.",
-	"The warden can hold C to place markers around the map.",
-	"Jail Break for Garry's Mod was created by Excl. Visit the developer's website at CasualBananas.com!",
-	"The warden can spawn various items and control certain options via the F4 menu.",
-	"Markers placed by the warden expire two minutes after being placed.",
-	"Respect your warden! Insulting your warden or disobeying orders will probably make him have you executed.",
-	"You are playing the official Jail Break for Garry's Mod, version 7, a complete remake of the gamemode we all have come to love.",
-	"Guards can run a little bit faster than prisoners. Make sure you only make your escape when nobody is looking!",
+	"Para empezar un Last Request, el ultimo prisionero vivo tiene que apretar F4.",
+	"El ultimo guardia vivo puede matar a todos los prisioneros sin razón, la unica excepción siendo cuando hay menos de tres prisioneros vivos.",
+	"El warden es el unico que puede dar ordenes complicadas. Los guardias solo pueden dar ordenes simples (Ejemplo: 'Muevansé', 'Tirá el arma')",
+	"Al principio de la ronda, los guardias pueden claimear warden apretando F4.",
+	"El Warden puede poner marcadores por el mapa manteniendo apretado C",
+	"Jail Break for Garry's Mod fue creado por Excl. Visitá la pagina del desarrollador en CasualBananas.com!",
+	"El warden puede spawnear ciertos props y cambiar siertas configuraciones desde el menú de F4.",
+	"Los marcadores puestos por el warden desaparecen después de dos minutos.",
+	"Respetá al warden! Insultarlo o desobedecer sus ordenes va a terminar en el ejecutandoté.",
+	"Los guardias pueden correr un poquito mas rapido que los prisioneros, asegurate de escapar a escondidas!",
+	"Hay varios caminos secretos escondidos por el mapa, algunos te dejan directo en la armeria!",
 };
 
 /* LIBRARIES */
@@ -276,7 +276,7 @@ local drawSpectatorHUD = function()
 	drawTexturedRect(x+32+16,y+32+16,32,32);
 
 	x,y = x+128-8,y+30;
-	width,height = drawSimpleShadowText("Did you know?","JBNormal",x,y,JB.Color.white,0,0);
+	width,height = drawSimpleShadowText("Sabiás que... ?","JBNormal",x,y,JB.Color.white,0,0);
 	y=y+height+2;
 
 	for i=1,#hint do
@@ -297,7 +297,7 @@ local drawTimer = function()
 	setMaterial(matTime);
 	drawTexturedRect(scrW-16-128,y,128,64);
 
-	local timerText = state == STATE_IDLE and "WAITING" or state == STATE_ENDED and "ENDED" or state == STATE_MAPVOTE and "MAPVOTE" or
+	local timerText = state == STATE_IDLE and "ESPERANDO" or state == STATE_ENDED and "TERMINADO" or state == STATE_MAPVOTE and "VOTANDO MAPA" or
 	convertTime(60*(state == STATE_LASTREQUEST and 3 or 10) - (CurTime() - JB.RoundStartTime));
 
 	drawSimpleShadowText(timerText,"JBNormal",scrW-16-64,y+32,JB.Color.white,1,1);
@@ -382,8 +382,8 @@ JB.Gamemode.HUDPaint = function(gm)
 	end
 
 	if #teamGetPlayers(TEAM_GUARD) < 1 or #teamGetPlayers(TEAM_PRISONER) < 1 then
-		drawText("A new round can not start until there is at least one player on both teams.\nWait for somebody to join the empty team.","JBNormalShadow",scrW/2,scrH * .6,JB.Color.black,1,1);
-		drawText("A new round can not start until there is at least one player on both teams.\nWait for somebody to join the empty team.","JBNormal",scrW/2,scrH * .6,JB.Color.white,1,1);
+		drawText("Una nueva ronda no puede empezar hasta que haya una persona en cada equipo. \nEsperá a que alguien entre al equipo vacío.","JBNormalShadow",scrW/2,scrH * .6,JB.Color.black,1,1);
+		drawText("Una nueva ronda no puede empezar hasta que haya una persona en cada equipo. \nEsperá a que alguien entre al equipo vacío.","JBNormal",scrW/2,scrH * .6,JB.Color.white,1,1);
 	end
 
 	if IsValid(JB.TRANSMITTER) and JB.TRANSMITTER:GetJBWarden_PointerPos() and JB.TRANSMITTER:GetJBWarden_PointerType() and wardenMarkers[JB.TRANSMITTER:GetJBWarden_PointerType()] then
