@@ -1,0 +1,7 @@
+"Jail Break"
+{
+	"base"		"base"
+	"title"		"Jail Break"
+	"maps"		"^jb_"
+	"menusystem"	"1"
+}
