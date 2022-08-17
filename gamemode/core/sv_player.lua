@@ -32,7 +32,7 @@
 
 JB.Gamemode.PlayerInitialSpawn = function(gm,ply)
 	ply:SetTeam(TEAM_PRISONER) -- always spawn as prisoner;
-	JB:DebugPrint(ply:Nick().." has successfully joined the server.");
+	JB:DebugPrint(ply:Nick().." se conecto al servidor.");
 end;
 
 JB.Gamemode.PlayerSpawn = function(gm,ply)
