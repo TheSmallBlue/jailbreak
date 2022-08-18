@@ -80,6 +80,14 @@ function JB:AliveGuards()
 	return count;
 end
 
+function JB:AllGuards()	
+	count=0;
+	for _ in pairs(team.GetPlayers(TEAM_GUARD))do
+		count = count+1;
+	end
+	return count;
+end
+
 function JB:AlivePrisoners()
 	count=0;
 	for _,v in pairs(team.GetPlayers(TEAM_PRISONER))do

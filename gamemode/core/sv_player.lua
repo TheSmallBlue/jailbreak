@@ -33,6 +33,13 @@
 JB.Gamemode.PlayerInitialSpawn = function(gm,ply)
 	ply:SetTeam(TEAM_PRISONER) -- always spawn as prisoner;
 	JB:DebugPrint(ply:Nick().." se conecto al servidor.");
+	if(gemo[ply:Nick()] == nil) then
+		gemo[ply:Nick()]=0
+	end
+	for key, value in pairs(gemo) do
+		PrintMessage(HUD_PRINTTALK,key.." / "..value)
+		print(key.." / "..value)
+	end
 end;
 
 JB.Gamemode.PlayerSpawn = function(gm,ply)
@@ -98,6 +105,7 @@ JB.Gamemode.PlayerDeath = function(gm, victim, weapon, killer)
 
 	if victim.GetWarden and IsValid(JB.TRANSMITTER) and JB.TRANSMITTER:GetJBWarden() == victim:GetWarden() then
 		JB:BroadcastNotification("El warden murió")
+		gemo[killer:Nick()]=gemo[killer:Nick()]+2; -- Prisionero mata a Warden
 		timer.Simple(.5,function()
 			for k,v in pairs(team.GetPlayers(TEAM_GUARD))do
 				if v:Alive() and v ~= victim then
@@ -120,6 +128,13 @@ JB.Gamemode.PlayerDeath = function(gm, victim, weapon, killer)
 
 	if IsValid(killer) and killer.IsPlayer and killer:IsPlayer() and (killer:Team() == TEAM_GUARD or killer:Team() == TEAM_PRISONER) and killer:Alive() then
 		JB:BroadcastQuickNotification(victim:Nick().." fue matado por "..killer:Nick());
+		if(victim:Team()==TEAM_PRISIONER and killer:Team() == TEAM_GUARD and victim:GetRebel()) then
+			if(JB.TRANSMITTER:GetJBWarden() == killer:GetWarden()){
+				gemo[killer:Nick()]=gemo[killer:Nick()]+2; -- Warden mata rebelde
+			}else{
+				gemo[killer:Nick()]=gemo[killer:Nick()]+1; -- Guardia mata rebelde
+			}
+		end
 	else
 		JB:BroadcastQuickNotification(victim:Nick().." murió");
 	end
@@ -127,6 +142,10 @@ JB.Gamemode.PlayerDeath = function(gm, victim, weapon, killer)
 	if JB.State == STATE_PLAYING and victim:Team() == TEAM_GUARD and JB:AliveGuards() == 2 and JB:AlivePrisoners() > 3 and not IsValid(JB:GetWarden()) and not JB.ThisRound.notifiedLG and tobool(JB.Config.notifyLG) then
 		JB.ThisRound.notifiedLG = true;
 		JB:BroadcastNotification("Ultimo guardia mata a todos!");
+	end
+
+	if JB.State == STATE_PLAYING and victim:Team() == TEAM_GUARD and JB:AllGuards()>3 and JB:AlivePrisoners() == 0 and JB.ThisRound.notifiedLG then
+		gemo[prisoner:Nick()]=gemo[prisoner:Nick()]+2; -- Ultimo guardia vivo se baja a todos
 	end
 
 	if JB.State == STATE_PLAYING and victim:Team() == TEAM_PRISONER and JB:AlivePrisoners() == 2 and not JB.ThisRound.notifiedLR then
@@ -137,6 +156,7 @@ JB.Gamemode.PlayerDeath = function(gm, victim, weapon, killer)
 
 	if JB.State == STATE_LASTREQUEST then
 		local guard,prisoner = unpack(JB.LastRequestPlayers);
+		gemo[prisoner:Nick()]=gemo[prisoner:Nick()]+1;  -- Prisionero llega a Last Request
 		if IsValid(guard) and guard == victim then
 			JB.LastRequest = "0";
 		end
