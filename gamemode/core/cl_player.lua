@@ -181,7 +181,7 @@ hook.Add("PlayerBindPress", "JB.PlayerBindPress.KeyBinds", function(pl, bind, pr
 		walking=!walking;
 		return true;
 	elseif string.find(bind,"+voicerecord") and pressed and ((pl:Team() == TEAM_PRISONER and (CurTime() - JB.RoundStartTime) < 30) or (not pl:Alive())) then
-		JB:DebugPrint("Todavía no podes hablar por voz - Moriste o no pasaron 30 segundos de iniciada la ronda.");
+		JB:DebugPrint("Todavía no podés hablar por voz - Moriste o no pasaron 30 segundos de iniciada la ronda.");
 		return true;
 	end
 end)
