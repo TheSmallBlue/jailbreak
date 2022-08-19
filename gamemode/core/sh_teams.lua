@@ -98,6 +98,16 @@ function JB:AlivePrisoners()
 	return count;
 end
 
+
+function JB:NoRebels()
+	for _,v in pairs(team.GetPlayers(TEAM_PRISONER)) do
+		if v:GetRebel() then
+			return false;
+		end
+	end
+	return true;
+end
+
 --Useless gooks
 function GM:PlayerJoinTeam() return false end
 function GM:PlayerRequestTeam() return false end

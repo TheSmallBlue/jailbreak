@@ -321,9 +321,18 @@ function JB:EndRound(winner)
 		resetSpecial()
 	end
 
+	if JB:NoRebels() then
+		for _,v in pairs(team.GetPlayers(TEAM_GUARD))do
+			gemo[v:Nick()]=gemo[v:Nick()]+1;
+		end
+		for _,v in pairs(team.GetPlayers(TEAM_PRISONER))do
+			gemo[v:Nick()]=gemo[v:Nick()]+1;
+		end
+	end
+
 	if SERVER then
 		if JB.RoundsPassed >= tonumber(JB.Config.roundsPerMap) and JB:Mapvote_StartMapVote() then
-			return; // Halt the round system; we're running a custom mapvote!
+			return; -- Halt the round system; we're running a custom mapvote!
 		end
 
 		chainState(STATE_ENDED,5,function()
