@@ -103,18 +103,20 @@ JB.Gamemode.PlayerDeath = function(gm, victim, weapon, killer)
 	victim:StripWeapons()
 	victim:SendNotification("Estás muteado hasta que termine la ronda")
 
-	if victim.GetWarden and IsValid(JB.TRANSMITTER) and JB.TRANSMITTER:GetJBWarden() == victim:GetWarden() then
-		JB:BroadcastNotification("El warden murió")
-		gemo[killer:Nick()]=gemo[killer:Nick()]+2; -- Prisionero mata a Warden
-		timer.Simple(.5,function()
-			for k,v in pairs(team.GetPlayers(TEAM_GUARD))do
-				if v:Alive() and v ~= victim then
-					JB:BroadcastNotification("Los prisioneros tienen un dia libre!");
-					break;
-				end
-			end
-		end);
-	end
+    if victim.GetWarden then
+        gemo[killer:Nick()]=gemo[killer:Nick()]+2; -- Prisionero mata a Warden
+        if IsValid(JB.TRANSMITTER) and JB.TRANSMITTER:GetJBWarden() == victim:GetWarden() then
+            JB:BroadcastNotification("El warden murió")
+            timer.Simple(.5,function()
+                for k,v in pairs(team.GetPlayers(TEAM_GUARD))do
+                    if v:Alive() and v ~= victim then
+                        JB:BroadcastNotification("Los prisioneros tienen un dia libre!");
+                        break;
+                    end
+                end
+            end);
+        end
+    end
 
 	if IsValid(killer) and killer.IsPlayer and killer:IsPlayer()
 	and	killer:Team() == TEAM_PRISONER and victim:Team() == TEAM_GUARD
@@ -128,12 +130,12 @@ JB.Gamemode.PlayerDeath = function(gm, victim, weapon, killer)
 
 	if IsValid(killer) and killer.IsPlayer and killer:IsPlayer() and (killer:Team() == TEAM_GUARD or killer:Team() == TEAM_PRISONER) and killer:Alive() then
 		JB:BroadcastQuickNotification(victim:Nick().." fue matado por "..killer:Nick());
-		if(victim:Team()==TEAM_PRISIONER and killer:Team() == TEAM_GUARD and victim:GetRebel()) then
-			if(JB.TRANSMITTER:GetJBWarden() == killer:GetWarden()){
+		if victim:Team()==TEAM_PRISONER and killer:Team() == TEAM_GUARD and victim:GetRebel() then
+			if JB.TRANSMITTER:GetJBWarden() == killer:GetWarden() then
 				gemo[killer:Nick()]=gemo[killer:Nick()]+2; -- Warden mata rebelde
-			}else{
+			else
 				gemo[killer:Nick()]=gemo[killer:Nick()]+1; -- Guardia mata rebelde
-			}
+			end
 		end
 	else
 		JB:BroadcastQuickNotification(victim:Nick().." murió");
