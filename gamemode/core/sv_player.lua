@@ -103,19 +103,21 @@ JB.Gamemode.PlayerDeath = function(gm, victim, weapon, killer)
 	victim:StripWeapons()
 	victim:SendNotification("Estás muteado hasta que termine la ronda")
 
-    if victim.GetWarden and IsValid(JB.TRANSMITTER) and JB.TRANSMITTER:GetJBWarden() == victim:GetWarden() then
-        JB.gemo[killer:Nick()]=JB.gemo[killer:Nick()]+2; -- Prisionero mata a Warden
-        print("El warden murio!")
-		JB:BroadcastNotification("El warden murió")
+	if victim.GetWarden and IsValid(JB.TRANSMITTER) and JB.TRANSMITTER:GetJBWarden() == victim:GetWarden() then
+		JB:BroadcastNotification("The warden has died")
 		timer.Simple(.5,function()
 			for k,v in pairs(team.GetPlayers(TEAM_GUARD))do
 				if v:Alive() and v ~= victim then
-					JB:BroadcastNotification("Los prisioneros tienen un dia libre!");
+					JB:BroadcastNotification("Prisoners get freeday");
 					break;
 				end
 			end
 		end);
-    end
+	end
+
+	if IsValid(JB.TRANSMITTER:GetJBWarden()) and JB.TRANSMITTER:GetJBWarden():Nick() == victim:Nick() then
+		JB.gemo[killer:Nick()]=JB.gemo[killer:Nick()]+2; -- Prisionero mata a Warden
+	end
 
 	if IsValid(killer) and killer.IsPlayer and killer:IsPlayer()
 	and	killer:Team() == TEAM_PRISONER and victim:Team() == TEAM_GUARD
@@ -130,7 +132,7 @@ JB.Gamemode.PlayerDeath = function(gm, victim, weapon, killer)
 	if IsValid(killer) and killer.IsPlayer and killer:IsPlayer() and (killer:Team() == TEAM_GUARD or killer:Team() == TEAM_PRISONER) and killer:Alive() then
 		JB:BroadcastQuickNotification(victim:Nick().." fue matado por "..killer:Nick());
 		if victim:Team()==TEAM_PRISONER and killer:Team() == TEAM_GUARD and victim:GetRebel() then
-			if JB.TRANSMITTER:GetJBWarden() == killer:GetWarden() then
+			if IsValid(JB.TRANSMITTER:GetJBWarden()) and JB.TRANSMITTER:GetJBWarden():Nick() == killer:Nick() then
 				JB.gemo[killer:Nick()]=JB.gemo[killer:Nick()]+2; -- Warden mata rebelde
 			else
 				JB.gemo[killer:Nick()]=JB.gemo[killer:Nick()]+1; -- Guardia mata rebelde
@@ -143,10 +145,6 @@ JB.Gamemode.PlayerDeath = function(gm, victim, weapon, killer)
 	if JB.State == STATE_PLAYING and victim:Team() == TEAM_GUARD and JB:AliveGuards() == 2 and JB:AlivePrisoners() > 3 and not IsValid(JB:GetWarden()) and not JB.ThisRound.notifiedLG and tobool(JB.Config.notifyLG) then
 		JB.ThisRound.notifiedLG = true;
 		JB:BroadcastNotification("Ultimo guardia mata a todos!");
-	end
-
-	if JB.State == STATE_PLAYING and victim:Team() == TEAM_GUARD and JB:AllGuards()>3 and JB:AlivePrisoners() == 0 and JB.ThisRound.notifiedLG then
-		JB.gemo[prisoner:Nick()]=JB.gemo[prisoner:Nick()]+2; -- Ultimo guardia vivo se baja a todos
 	end
 
 	if JB.State == STATE_PLAYING and victim:Team() == TEAM_PRISONER and JB:AlivePrisoners() == 2 and not JB.ThisRound.notifiedLR then
