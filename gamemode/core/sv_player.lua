@@ -36,7 +36,7 @@ JB.Gamemode.PlayerInitialSpawn = function(gm,ply)
 	if(JB.gemo[ply:Nick()] == nil) then
 		JB.gemo[ply:Nick()]=0;
 	end;
-	for key, value in pairs(gemo) do
+	for key, value in pairs(JB.gemo) do
 		PrintMessage(HUD_PRINTTALK,key.." / "..value);
 		print(key.." / "..value);
 	end;
@@ -49,8 +49,6 @@ JB.Gamemode.PlayerSpawn = function(gm,ply)
 			ply:KillSilent();
 			gm:PlayerSpawnAsSpectator(ply);
 			return;
-		else
-			JB.gemo[ply:Nick()]=JB.gemo[ply:Nick()]+1;
 		end
 
 	ply._jb_forceRespawn=false
@@ -105,20 +103,18 @@ JB.Gamemode.PlayerDeath = function(gm, victim, weapon, killer)
 	victim:StripWeapons()
 	victim:SendNotification("Estás muteado hasta que termine la ronda")
 
-    if victim.GetWarden then
+    if victim.GetWarden and IsValid(JB.TRANSMITTER) and JB.TRANSMITTER:GetJBWarden() == victim:GetWarden() then
         JB.gemo[killer:Nick()]=JB.gemo[killer:Nick()]+2; -- Prisionero mata a Warden
         print("El warden murio!")
-        if IsValid(JB.TRANSMITTER) and JB.TRANSMITTER:GetJBWarden() == victim:GetWarden() then
-            JB:BroadcastNotification("El warden murió")
-            timer.Simple(.5,function()
-                for k,v in pairs(team.GetPlayers(TEAM_GUARD))do
-                    if v:Alive() and v ~= victim then
-                        JB:BroadcastNotification("Los prisioneros tienen un dia libre!");
-                        break;
-                    end
-                end
-            end);
-        end
+		JB:BroadcastNotification("El warden murió")
+		timer.Simple(.5,function()
+			for k,v in pairs(team.GetPlayers(TEAM_GUARD))do
+				if v:Alive() and v ~= victim then
+					JB:BroadcastNotification("Los prisioneros tienen un dia libre!");
+					break;
+				end
+			end
+		end);
     end
 
 	if IsValid(killer) and killer.IsPlayer and killer:IsPlayer()
@@ -129,15 +125,6 @@ JB.Gamemode.PlayerDeath = function(gm, victim, weapon, killer)
 	and JB.State ~= STATE_LASTREQUEST then
 		JB:DebugPrint(killer:Nick().. "  se está rebelando!!");
 		killer:AddRebelStatus();
-		if HayRebeldes == false then 
-			HayRebeldes = true;
-			for k,v in ipairs(team.GetPlayers(TEAM_GUARD))do
-				JB.gemo[v:Nick()]=JB.gemo[v:Nick()]-1;
-			end
-			for k,v in ipairs(team.GetPlayers(TEAM_PRISONER))do
-				JB.gemo[v:Nick()]=JB.gemo[v:Nick()]-1;
-			end
-		end
 	end
 
 	if IsValid(killer) and killer.IsPlayer and killer:IsPlayer() and (killer:Team() == TEAM_GUARD or killer:Team() == TEAM_PRISONER) and killer:Alive() then

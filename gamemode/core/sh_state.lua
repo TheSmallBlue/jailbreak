@@ -255,8 +255,6 @@ function JB:NewRound(rounds_passed)
 		PrintMessage(HUD_PRINTTALK,key.." / "..value)
 		print(key.." / "..value)
 	end
-
-	HayRebeldes = false
 	
 	rounds_passed = rounds_passed or JB.RoundsPassed;
 
@@ -333,6 +331,15 @@ function JB:EndRound(winner)
 	if SERVER then
 		if JB.RoundsPassed >= tonumber(JB.Config.roundsPerMap) and JB:Mapvote_StartMapVote() then
 			return; -- Halt the round system; we're running a custom mapvote!
+		end
+
+		if JB:NoRebels() then
+			for _,v in pairs(team.GetPlayers(TEAM_GUARD))do
+				JB.gemo[v:Nick()]=JB.gemo[v:Nick()]+1;
+			end
+			for _,v in pairs(team.GetPlayers(TEAM_PRISONER))do
+				JB.gemo[v:Nick()]=JB.gemo[v:Nick()]+1;
+			end
 		end
 
 		chainState(STATE_ENDED,5,function()
