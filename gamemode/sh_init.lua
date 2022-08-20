@@ -31,8 +31,6 @@
 -- ####################################################################################
 
 
-gemo={}
-
 local config = {};
 
 local function makeConfig(name,default)
@@ -98,6 +96,8 @@ setmetatable(JB.Config,{
 		return nil;
 	end
 })
+
+JB.gemo = {};
 
 -- debug
 function JB:DebugPrint(...)

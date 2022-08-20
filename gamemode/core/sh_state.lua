@@ -251,11 +251,12 @@ JB.ThisRound = {};
 local wantStartup = false;
 function JB:NewRound(rounds_passed)
 
-	print(type(gemo))
-	for key, value in pairs(gemo) do
+	for key, value in pairs(JB.gemo) do
 		PrintMessage(HUD_PRINTTALK,key.." / "..value)
 		print(key.." / "..value)
 	end
+
+	HayRebeldes = false
 	
 	rounds_passed = rounds_passed or JB.RoundsPassed;
 
@@ -327,17 +328,6 @@ function JB:EndRound(winner)
 
 	if JB.ThisRound.IsSpecialRound then
 		resetSpecial()
-	end
-
-	if JB:NoRebels() then
-		for _,v in pairs(team.GetPlayers(TEAM_GUARD))do
-			print(gemo[v:Nick()])
-			gemo[v:Nick()]=gemo[v:Nick()]+1;
-		end
-		for _,v in pairs(team.GetPlayers(TEAM_PRISONER))do
-			print(gemo[v:Nick()])
-			gemo[v:Nick()]=gemo[v:Nick()]+1;
-		end
 	end
 
 	if SERVER then
