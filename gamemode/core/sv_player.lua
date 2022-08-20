@@ -34,12 +34,12 @@ JB.Gamemode.PlayerInitialSpawn = function(gm,ply)
 	ply:SetTeam(TEAM_PRISONER) -- always spawn as prisoner;
 	JB:DebugPrint(ply:Nick().." se conectó al servidor.");
 	if(gemo[ply:Nick()] == nil) then
-		gemo[ply:Nick()]=0
-	end
+		gemo[ply:Nick()]=0;
+	end;
 	for key, value in pairs(gemo) do
-		PrintMessage(HUD_PRINTTALK,key.." / "..value)
-		print(key.." / "..value)
-	end
+		PrintMessage(HUD_PRINTTALK,key.." / "..value);
+		print(key.." / "..value);
+	end;
 end;
 
 JB.Gamemode.PlayerSpawn = function(gm,ply)
