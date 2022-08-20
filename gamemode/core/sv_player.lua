@@ -105,6 +105,7 @@ JB.Gamemode.PlayerDeath = function(gm, victim, weapon, killer)
 
     if victim.GetWarden then
         gemo[killer:Nick()]=gemo[killer:Nick()]+2; -- Prisionero mata a Warden
+        print("El warden murio!")
         if IsValid(JB.TRANSMITTER) and JB.TRANSMITTER:GetJBWarden() == victim:GetWarden() then
             JB:BroadcastNotification("El warden murió")
             timer.Simple(.5,function()

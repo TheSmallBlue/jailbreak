@@ -317,6 +317,11 @@ function JB:NewRound(rounds_passed)
 	hook.Call("JailBreakRoundStart",JB.Gamemode,JB.RoundsPassed);
 end
 function JB:EndRound(winner)
+	for key, value in pairs(gemo) do
+		PrintMessage(HUD_PRINTTALK,key.." / "..value)
+		print(key.." / "..value)
+	end
+
 	if JB.ThisRound.IsSpecialRound then
 		resetSpecial()
 	end
