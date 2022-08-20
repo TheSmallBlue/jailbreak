@@ -250,6 +250,12 @@ Round System
 JB.ThisRound = {};
 local wantStartup = false;
 function JB:NewRound(rounds_passed)
+
+	for key, value in pairs(gemo) do
+		PrintMessage(HUD_PRINTTALK,key.." / "..value)
+		print(key.." / "..value)
+	end
+	
 	rounds_passed = rounds_passed or JB.RoundsPassed;
 
 	JB.ThisRound = {};
@@ -317,10 +323,6 @@ function JB:NewRound(rounds_passed)
 	hook.Call("JailBreakRoundStart",JB.Gamemode,JB.RoundsPassed);
 end
 function JB:EndRound(winner)
-	for key, value in pairs(gemo) do
-		PrintMessage(HUD_PRINTTALK,key.." / "..value)
-		print(key.." / "..value)
-	end
 
 	if JB.ThisRound.IsSpecialRound then
 		resetSpecial()
