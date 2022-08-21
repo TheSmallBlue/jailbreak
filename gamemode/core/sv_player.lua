@@ -142,12 +142,12 @@ JB.Gamemode.PlayerDeath = function(gm, victim, weapon, killer)
 		JB:BroadcastQuickNotification(victim:Nick().." murió");
 	end
 
-	if JB.State == STATE_PLAYING and victim:Team() == TEAM_GUARD and JB:AliveGuards() == 2 and JB:AlivePrisoners() > 3 and not IsValid(JB:GetWarden()) and not JB.ThisRound.notifiedLG and tobool(JB.Config.notifyLG) then
+	if JB.State == STATE_PLAYING and victim:Team() == TEAM_GUARD and JB:AliveGuards() == 1 and JB:AlivePrisoners() > 3 and not IsValid(JB:GetWarden()) and not JB.ThisRound.notifiedLG and tobool(JB.Config.notifyLG) then
 		JB.ThisRound.notifiedLG = true;
 		JB:BroadcastNotification("Ultimo guardia mata a todos!");
 	end
 
-	if JB.State == STATE_PLAYING and victim:Team() == TEAM_PRISONER and JB:AlivePrisoners() == 2 and not JB.ThisRound.notifiedLR then
+	if JB.State == STATE_PLAYING and victim:Team() == TEAM_PRISONER and JB:AlivePrisoners() == 1 and not JB.ThisRound.notifiedLR then
 		JB.ThisRound.notifiedLR = true;
 		JB:BroadcastNotification("El ultimo prisionero puede seleccionar un Last Request del menú (F4).");
 		JB:BroadcastNotification("Last Requests solo son validas en la ronda actual!");
